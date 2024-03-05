@@ -1,22 +1,22 @@
+# checks for valid number of rounds
 def rounds(question):
-
     error = "please enter an integer above 0, or <enter> for infinite mode"
 
     while True:
+
+        to_check = input(question)
+
+        if to_check == "":
+            return "infinite"
+
         try:
+            response = int(to_check)
 
-            num_rounds = input(question)
-
-            if num_rounds == "":
-                ans = "infinite"
-                return ans
-
-            elif int(num_rounds) > 0:
-                ans = num_rounds
-                return ans
+            if response < 1:
+                print(error)
 
             else:
-                print(error)
+                return response
 
         except ValueError:
             print(error)
@@ -70,19 +70,11 @@ def instructions():
 # main routine
 mode = "regular"
 rounds_played = 0
-rounds_tied = 0
-rounds_lost = 0
-rounds_won = 0
-
-rps_list = ["rock", "paper", "scissors", "xxx"]
-game_history = []
 
 print("\n👆👆👆 Higher or Lower 👇👇👇")
 print()
 
 # instructions
-
-# asks user
 wants_instructions = yes_no("Do you want to view the instructions? ")
 
 if wants_instructions == "yes":
@@ -112,64 +104,13 @@ while rounds_played < rounds_to_play:
 
     print(heading)
 
-    user_weapon = string_checker("choose your weapon: ", rps_list)
+    weapon = input("choose your user_weapon: ")
 
-    if user_weapon == "xxx":
+    if weapon == "xxx":
         break
-
-    # randomly chooses from the list (excluding the exit code)
-    com_weapon = random.choice(rps_list[:-1])
-    print("Computer chose ", com_weapon)
-
-    result = rps_compare(user_weapon, com_weapon)
-
-    if result == "tie":
-        rounds_tied += 1
-        feedback = "You Tied"
-
-    elif result == "lose":
-        rounds_lost += 1
-        feedback = "You Lost"
-
-    else:
-        rounds_won += 1
-        feedback = "You Won"
-
-    round_feedback = f"{user_weapon} vs {com_weapon}, {feedback}"
-    history_item = f"Round: {rounds_played + 1} - {round_feedback}"
-
-    print(round_feedback)
-    game_history.append(history_item)
 
     rounds_played += 1
 
     # if inf mode, increase number of rounds
     if mode == "infinite":
         rounds_to_play += 1
-
-# calculate stats
-if rounds_played > 0:
-    percent_won = rounds_won / rounds_played * 100
-    percent_lost = rounds_lost / rounds_played * 100
-    percent_tied = 100 - percent_won - percent_lost
-
-    # Output Game Stats
-    print("\n📊📊📊 Game Statistics 📊📊📊")
-    print(f"👍 Won: {percent_won:.2f} \t "
-          f"😥 Lost: {percent_lost:.2f} \t "
-          f"⚖ Tied: {percent_tied:.2f}")
-
-    show_history = string_checker("\nDo you want to see the game history? ")
-    if show_history == "yes":
-        print("\nGame History")
-
-        for item in game_history:
-            print(item)
-
-        print()
-
-else:
-    print("\n🐔🐔🐔 B'kawk B'kawk - You chickened out 🐔🐔🐔")
-    print()
-
-print("Thanks for playing!")
