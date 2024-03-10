@@ -41,22 +41,34 @@ def int_check(question, low=None, high=None, exit_code=None):
             print(error)
 
 
-# main routine
+secret = 7
 
-rounds = "test"
-while rounds != "":
-    rounds = int_check("Rounds <enter for infinite>: ", low=1, exit_code="")
-    print(f"You asked for {rounds}")
+low_num = 0
+high_num = 10
+guesses_allowed = 5
 
-low_num = int_check("Low Number? ")
-print(f"You chose a low number of {low_num}")
+guesses_used = 0
+already_guessed = []
 
-high_num = int_check("High Number? ", low=1)
-print(f"You chose a high number of {high_num}")
-
-# Check user guesses
 guess = ""
-while guess != "xxx":
-    guess = int_check("Guess: ", low=0, high=10, exit_code="xxx")
-    print(f"You guessed {guess}")
-    print()
+while guess != secret and guesses_used < guesses_allowed:
+
+    guess = int_check("Guess: ", low_num, high_num, "xxx")
+
+    if guess == "xxx":
+        end_game = "yes"
+        break
+
+    if guess in already_guessed:
+        print(f"You've already guessed {guess}. You've *still* used"
+              f" {guesses_used} / {guesses_allowed} guesses")
+        continue
+
+    else:
+        already_guessed.append(guess)
+
+    guesses_used += 1
+
+    if guess < secret and guesses_used < guesses_allowed:
+        feedback = f"Too low, please try a higher number. " \
+                   f"You've used {guesses_used} / {guesses_allowed} guesses"
