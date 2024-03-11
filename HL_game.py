@@ -4,30 +4,6 @@ import math
 import random
 
 
-# checks for valid number of rounds
-def rounds(question):
-    error = "please enter an integer above 0, or <enter> for infinite mode"
-
-    while True:
-
-        to_check = input(question)
-
-        if to_check == "":
-            return "infinite"
-
-        try:
-            response = int(to_check)
-
-            if response < 1:
-                print(error)
-
-            else:
-                return response
-
-        except ValueError:
-            print(error)
-
-
 def get_stats(stats_list):
     stats_list.sort()
 
@@ -206,36 +182,31 @@ while rounds_played < rounds_to_play:
             feedback = f"\nToo low, please try a higher number. " \
                        f"\nYou've used {guesses_used} / {max_guesses} guesses"
 
-            result = ""
-
             print(feedback)
 
         elif guess > secret and guesses_used <= max_guesses:
             feedback = f"\nToo high, please try a lower number. " \
                        f"\nYou've used {guesses_used} / {max_guesses} guesses"
-            result = ""
 
             print(feedback)
 
         elif guess == secret and guesses_used <= max_guesses:
-            feedback = f"\nCongrats! You found the secret number! {secret} " \
-                       f"\nYou used {guesses_used} / {max_guesses} guesses"
 
-            result = feedback
+            result = f"You Won in {guesses_used} guesses \t Number: {secret}"
 
             print(result)
+
+            game_history.append(result)
+            all_scores.append(guesses_used)
 
         else:
-            feedback = f"\nYou used all of your {max_guesses} guesses." \
-                       f"\nYou lost. \t" \
-                       f"The secret number was: {secret}"
 
-            result = feedback
+            result = f"You Went over {max_guesses} guesses and Lost \t Number: {secret}"
 
             print(result)
 
-        all_scores.append(guesses_used)
-        game_history.append(result)
+            game_history.append(result)
+            all_scores.append(guesses_used)
 
     # round ends here
 
@@ -257,7 +228,7 @@ if rounds_played > 0:
 
     see_history = yes_no("\ndo you want to see your game history? ")
     if see_history == "yes":
-        print("\nGame History")
+        print("\n⌛⌛⌛ Game History ⌛⌛⌛")
         for item in game_history:
             print(item)
 
